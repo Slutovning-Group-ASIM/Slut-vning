@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -116,8 +116,54 @@ public class ToDoTask
                 }
             }
         }
+        // 
+        public int ChooseId()
+        {            
+            // menu to let user either show all tasks or choose id straight away
+            Console.WriteLine("Välj ett alternativ:");
+            Console.WriteLine("[1] - Visa alla uppgifter");
+            Console.WriteLine("[2] - Välj ID direkt");
+            Console.WriteLine("[0] - Avbryt");
+            while (true)
+            {
+            string input = Console.ReadLine();
+                if (int.TryParse(input, out int choice))
+                {
+                    switch (choice)
+                    {
+                        case 1:
+                            DisplayAllTasks();
+                            break;
+                        case 2:
+                            Console.WriteLine("Ange ID för uppgiften:");
+                            string idInput = Console.ReadLine();
+                            if (int.TryParse(idInput, out int id))
+                            {
+                                return id;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ogiltigt ID, försök igen.");
+                                return -1; // Returnerar -1 för att indikera ogiltigt ID
+                            }
+                        case 0:
+                            // exit the method and return to main menu
+                            return -1; // Returnerar -1 för att indikera avbrott
+                        default:
+                            Console.WriteLine("Ogiltigt val, försök igen.");
+                            return -1; // Returnerar -1 för att indikera ogiltigt val
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val, försök igen.");
+                    return -1; // Returnerar -1 för att indikera ogiltigt val
+                }
+            }            
+        }
 
-        public static void CompleteTask(int id)
+         // CompleteTask();
+        public void CompleteTask(int id) 
         {
 
             ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);
