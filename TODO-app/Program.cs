@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -49,6 +47,19 @@ public class ToDoTask
             }
 
 
+        }
+        public void DeleteTask(int id)
+        {
+            
+            var selectedId = tasks.FirstOrDefault(p => p.Id == id); // Checks if object with id excists
+            if(selectedId != null)
+            {
+                tasks.Remove(selectedId);
+                System.Console.WriteLine("Produkten har tagits bort!");
+            }
+            else
+                System.Console.WriteLine("Något gick fel");
+                
         }
         public static void DisplayMenu()
         {
