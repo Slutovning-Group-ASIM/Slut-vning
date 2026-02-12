@@ -19,12 +19,11 @@ namespace MyApp
 
     public class ToDoTask
     {
+        public static List<ToDoTask> tasks = new();
         public string Title { get; set; }
         public bool IsCompleted { get; set; }
         private static int _nextId = 1;
         public int Id { get; private set; }
-
-        public List<ToDoTask> tasks = new();
 
         public ToDoTask(string title)
         {
@@ -44,14 +43,15 @@ namespace MyApp
         public static void DisplayMenu()
         {
             bool isRunning = true;
+            var service = new ToDoTask();
             while (isRunning)
             {
-                Console.WriteLine("Välkommen till din To Do List!");
+                Console.WriteLine("\nVälkommen till din To Do List!\n");
                 Console.WriteLine("[1] - Lägg till uppgift");
                 Console.WriteLine("[2] - Visa alla uppgifter");
                 Console.WriteLine("[3] - Markera som klar");
                 Console.WriteLine("[4] - Ta bort uppgift");
-                Console.WriteLine("[0] - Avsluta");
+                Console.WriteLine("[0] - Avsluta\n");
 
                 string input = Console.ReadLine();
                 if (int.TryParse(input, out int choice))
@@ -59,21 +59,25 @@ namespace MyApp
                     switch (choice)
                     {
                         case 1:
-                            var service = new ToDoTask();
                             Console.WriteLine("Ange uppgiftens titel:");
                             string title = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(title))
                             {
-
+                                Console.WriteLine("Titeln får inte vara tom. Försök igen.");
                             }
-                            service.AddTask(title);
+                            else
+                            {
+                                service.AddTask(title);
+                            }
                             break;
                         case 2:
+                            service.DisplayAllTasks();
                             break;
                         case 3:
-                        
+                            // service.CompleteTask();
                             break;
                         case 4:
+                            isRunning = false;
                             break;
                         case 0:
                             break;
@@ -134,13 +138,13 @@ namespace MyApp
 
             for (int i = 0; i < tasks.Count; i++)
             {
-                int id = i + 1;
+          //      int id = i + 1;
 
                 string statusSymbol = tasks[i].IsCompleted ? "[X] Done" : "[ ] Not done :";
 
                 if (tasks[i].IsCompleted) Console.ForegroundColor = ConsoleColor.Green;
 
-                Console.WriteLine($"{id,-5} {statusSymbol,-10} {tasks[i].Title}");
+                Console.WriteLine($"{tasks[i].Id,-5} {statusSymbol,-10} {tasks[i].Title}");
 
                 Console.ResetColor();
             }
