@@ -12,12 +12,10 @@ namespace MyApp
         {
             ToDoTask.DisplayMenu();
         }
-   
+
     }
 
-       
-
-    public class ToDoTask
+public class ToDoTask
     {
         public static List<ToDoTask> tasks = new();
         public string Title { get; set; }
@@ -44,8 +42,10 @@ namespace MyApp
             }
             else
             {
-                tasks.Add(new ToDoTask(title));
                 Console.WriteLine($"\n{title} har lagts till i din To Do lista.");
+                tasks.Add(new ToDoTask(title));
+                Console.WriteLine("\nTryck ENTER för att gå tillbaka till menyn...");
+                Console.ReadLine();
             }
 
 
@@ -69,6 +69,7 @@ namespace MyApp
                     switch (choice)
                     {
                         case 1:
+                            Console.Clear();
                             Console.WriteLine("Ange uppgiftens titel:");
                             string title = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(title))
@@ -79,12 +80,13 @@ namespace MyApp
                             {
                                 AddTask(title);
                             }
+                            Console.Clear();
                             break;
                         case 2:
                             DisplayAllTasks();
                             break;
-                        case 3: 
-                           // CompleteTask();
+                        case 3:
+                            // CompleteTask();
                             break;
                         case 4:
                             isRunning = false;
@@ -103,15 +105,15 @@ namespace MyApp
                 }
             }
         }
-       
-        public static void CompleteTask(int id) 
+
+        public static void CompleteTask(int id)
         {
-            
-            ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
-            
+
+            ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);
+
             if (task != null)
             {
-                
+
                 if (task.IsCompleted)
                 {
                     Console.WriteLine("Task is already completed.");
@@ -123,13 +125,13 @@ namespace MyApp
                     Console.WriteLine("Task marked as completed.");
                     return;
                 }
-            }         
+            }
             // else show error message
             if (task == null)
             {
                 Console.WriteLine("Task not found.");
                 return;
-            }            
+            }
         }
         public static void DisplayAllTasks()
         {
@@ -148,7 +150,7 @@ namespace MyApp
 
             for (int i = 0; i < tasks.Count; i++)
             {
-          //      int id = i + 1;
+                //      int id = i + 1;
 
                 string statusSymbol = tasks[i].IsCompleted ? "[X] Done" : "[ ] Not done :";
 
@@ -160,6 +162,9 @@ namespace MyApp
             }
         }
 
-    }
+
+     
+
+}
 
 }
