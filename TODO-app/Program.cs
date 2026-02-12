@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -13,12 +15,14 @@ namespace MyApp
    
     }
 
+       
+
     public class ToDoTask
     {
         public string Title { get; set; }
         public bool IsCompleted { get; set; }
         private static int _nextId = 1;
-        public static int Id { get; private set; }
+        public int Id { get; private set; }
 
         public List<ToDoTask> tasks = new();
 
@@ -67,6 +71,7 @@ namespace MyApp
                         case 2:
                             break;
                         case 3:
+                        
                             break;
                         case 4:
                             break;
@@ -83,7 +88,34 @@ namespace MyApp
                     Console.WriteLine("Ogiltigt val, försök igen.");
                 }
             }
-
+        }
+         // CompleteTask();
+        public void CompleteTask(int id) // Method to complete a task based on its id
+        {
+            // Assuming user chose to complete task from menu, do the below steps
+            ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
+            // if id match in list, show user message that task is completed
+            if (task != null)
+            {
+                // if task already completed, show user message that task is already completed
+                if (task.IsCompleted)
+                {
+                    Console.WriteLine("Task is already completed.");
+                    return;
+                }
+                else if (!task.IsCompleted)
+                {
+                    task.IsCompleted = true;
+                    Console.WriteLine("Task marked as completed.");
+                    return;
+                }
+            }         
+            // else show error message
+            if (task == null)
+            {
+                Console.WriteLine("Task not found.");
+                return;
+            }            
         }
     }
 }
