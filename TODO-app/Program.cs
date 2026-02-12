@@ -140,18 +140,12 @@ namespace MyApp
 
                 if (tasks[i].IsCompleted) Console.ForegroundColor = ConsoleColor.Green;
 
-                Console.WriteLine($"{id,-5} {statusSymbol,-10} {tasks[i].Description}");
+                Console.WriteLine($"{id,-5} {statusSymbol,-10} {tasks[i].Title}");
 
                 Console.ResetColor();
             }
         }
 
-        public void AddTask(string desc)
-        {
-            tasks.Add(new TodoTask(desc));
-            Console.WriteLine("Uppgift tillagd!");
-        }
     }
 
-}
 }
