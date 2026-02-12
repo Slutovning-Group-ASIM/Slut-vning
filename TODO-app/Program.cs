@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.Design;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -37,6 +38,11 @@ namespace MyApp
         {
             tasks.Add(new ToDoTask(title));
         }
+        public static void DeleteTask(int id)
+        {
+            var service = new ToDoTask();
+            var selectedId = service.tasks.FirstOrDefault(p => p.Id == id);
+        }
         public static void DisplayMenu()
         {
             bool isRunning = true;
@@ -69,6 +75,11 @@ namespace MyApp
                         case 3:
                             break;
                         case 4:
+                            if(Int32.TryParse(Console.ReadLine(), out int id))
+                            {
+                                DeleteTask(id);
+                            }
+
                             break;
                         case 0:
                             break;
@@ -83,7 +94,7 @@ namespace MyApp
                     Console.WriteLine("Ogiltigt val, försök igen.");
                 }
             }
-
+        }
+        
         }
     }
-}
