@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -41,9 +39,23 @@ namespace MyApp
         {
             tasks.Add(new ToDoTask(title));
         }
+        public void DeleteTask(int id)
+        {
+            
+            var selectedId = tasks.FirstOrDefault(p => p.Id == id); // Checks if object with id excists
+            if(selectedId != null)
+            {
+                tasks.Remove(selectedId);
+                System.Console.WriteLine("Produkten har tagits bort!");
+            }
+            else
+                System.Console.WriteLine("Något gick fel");
+                
+        }
         public static void DisplayMenu()
         {
             bool isRunning = true;
+            var service = new ToDoTask();
             while (isRunning)
             {
                 Console.WriteLine("Välkommen till din To Do List!");
@@ -59,7 +71,6 @@ namespace MyApp
                     switch (choice)
                     {
                         case 1:
-                            var service = new ToDoTask();
                             Console.WriteLine("Ange uppgiftens titel:");
                             string title = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(title))
@@ -74,7 +85,20 @@ namespace MyApp
                         
                             break;
                         case 4:
-                            break;
+                        bool running = true;
+                            while (running)
+                            {                                   
+                                System.Console.Write("Vänligen ange ID för tasken du vill ta bort: ");
+                                if(Int32.TryParse(Console.ReadLine(), out int id))
+                                {
+                                    service.DeleteTask(id);
+                                    running = false;
+                                }
+                                else
+                                    System.Console.WriteLine("Vänligen ange ett ID i siffror");
+
+                            }
+                                break;
                         case 0:
                             break;
 
