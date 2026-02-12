@@ -90,14 +90,14 @@ namespace MyApp
             }
         }
          // CompleteTask();
-        public void CompleteTask(int id) // Method to complete a task based on its id
+        public void CompleteTask(int id) 
         {
-            // Assuming user chose to complete task from menu, do the below steps
+            
             ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
-            // if id match in list, show user message that task is completed
+            
             if (task != null)
             {
-                // if task already completed, show user message that task is already completed
+                
                 if (task.IsCompleted)
                 {
                     Console.WriteLine("Task is already completed.");
@@ -117,5 +117,41 @@ namespace MyApp
                 return;
             }            
         }
+        public void DisplayAllTasks()
+        {
+            Console.Clear();
+            Console.WriteLine("--- To Do: ---");
+
+            if (tasks.Count == 0)
+            {
+                Console.WriteLine("No data to display.");
+                return;
+            }
+
+
+            Console.WriteLine($"{"ID",-5} {"Status",-10} {"Titel"}");
+            Console.WriteLine("-----------------------------------");
+
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                int id = i + 1;
+
+                string statusSymbol = tasks[i].IsCompleted ? "[X] Done" : "[ ] Not done :";
+
+                if (tasks[i].IsCompleted) Console.ForegroundColor = ConsoleColor.Green;
+
+                Console.WriteLine($"{id,-5} {statusSymbol,-10} {tasks[i].Description}");
+
+                Console.ResetColor();
+            }
+        }
+
+        public void AddTask(string desc)
+        {
+            tasks.Add(new TodoTask(desc));
+            Console.WriteLine("Uppgift tillagd!");
+        }
     }
+
+}
 }
