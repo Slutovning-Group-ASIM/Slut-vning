@@ -36,9 +36,18 @@ namespace MyApp
         {
         }
 
-        public void AddTask(string title)
+        public static void AddTask(string title)
         {
-            tasks.Add(new ToDoTask(title));
+            if (string.IsNullOrEmpty(title))
+            {
+                Console.WriteLine("Titeln får inte vara tom. Försök igen.");
+            }
+            else
+            {
+                tasks.Add(new ToDoTask(title));
+                Console.WriteLine($"\n{title} har lagts till i din To Do lista.");
+            }
+
         }
         public static void DisplayMenu()
         {
@@ -67,14 +76,14 @@ namespace MyApp
                             }
                             else
                             {
-                                service.AddTask(title);
+                                AddTask(title);
                             }
                             break;
                         case 2:
-                            service.DisplayAllTasks();
+                            DisplayAllTasks();
                             break;
-                        case 3:
-                            // service.CompleteTask();
+                        case 3: 
+                           // CompleteTask();
                             break;
                         case 4:
                             isRunning = false;
@@ -93,8 +102,8 @@ namespace MyApp
                 }
             }
         }
-         // CompleteTask();
-        public void CompleteTask(int id) 
+       
+        public static void CompleteTask(int id) 
         {
             
             ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
@@ -121,7 +130,7 @@ namespace MyApp
                 return;
             }            
         }
-        public void DisplayAllTasks()
+        public static void DisplayAllTasks()
         {
             Console.Clear();
             Console.WriteLine("--- To Do: ---");
