@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.Design;
 using System.Threading.Tasks;
 
 namespace MyApp
@@ -14,12 +13,14 @@ namespace MyApp
    
     }
 
+       
+
     public class ToDoTask
     {
         public string Title { get; set; }
         public bool IsCompleted { get; set; }
         private static int _nextId = 1;
-        public static int Id { get; private set; }
+        public int Id { get; private set; }
 
         public List<ToDoTask> tasks = new();
 
@@ -38,14 +39,23 @@ namespace MyApp
         {
             tasks.Add(new ToDoTask(title));
         }
-        public static void DeleteTask(int id)
+        public void DeleteTask(int id)
         {
-            var service = new ToDoTask();
-            var selectedId = service.tasks.FirstOrDefault(p => p.Id == id);
+            
+            var selectedId = tasks.FirstOrDefault(p => p.Id == id); // Checks if object with id excists
+            if(selectedId != null)
+            {
+                tasks.Remove(selectedId);
+                System.Console.WriteLine("Produkten har tagits bort!");
+            }
+            else
+                System.Console.WriteLine("Något gick fel");
+                
         }
         public static void DisplayMenu()
         {
             bool isRunning = true;
+            var service = new ToDoTask();
             while (isRunning)
             {
                 Console.WriteLine("Välkommen till din To Do List!");
@@ -61,7 +71,6 @@ namespace MyApp
                     switch (choice)
                     {
                         case 1:
-                            var service = new ToDoTask();
                             Console.WriteLine("Ange uppgiftens titel:");
                             string title = Console.ReadLine();
                             if (string.IsNullOrWhiteSpace(title))
@@ -73,14 +82,23 @@ namespace MyApp
                         case 2:
                             break;
                         case 3:
+                        
                             break;
                         case 4:
-                            if(Int32.TryParse(Console.ReadLine(), out int id))
-                            {
-                                DeleteTask(id);
-                            }
+                        bool running = true;
+                            while (running)
+                            {                                   
+                                System.Console.Write("Vänligen ange ID för tasken du vill ta bort: ");
+                                if(Int32.TryParse(Console.ReadLine(), out int id))
+                                {
+                                    service.DeleteTask(id);
+                                    running = false;
+                                }
+                                else
+                                    System.Console.WriteLine("Vänligen ange ett ID i siffror");
 
-                            break;
+                            }
+                                break;
                         case 0:
                             break;
 
@@ -95,6 +113,63 @@ namespace MyApp
                 }
             }
         }
-        
+         // CompleteTask();
+        public void CompleteTask(int id) 
+        {
+            
+            ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
+            
+            if (task != null)
+            {
+                
+                if (task.IsCompleted)
+                {
+                    Console.WriteLine("Task is already completed.");
+                    return;
+                }
+                else if (!task.IsCompleted)
+                {
+                    task.IsCompleted = true;
+                    Console.WriteLine("Task marked as completed.");
+                    return;
+                }
+            }         
+            // else show error message
+            if (task == null)
+            {
+                Console.WriteLine("Task not found.");
+                return;
+            }            
         }
+        public void DisplayAllTasks()
+        {
+            Console.Clear();
+            Console.WriteLine("--- To Do: ---");
+
+            if (tasks.Count == 0)
+            {
+                Console.WriteLine("No data to display.");
+                return;
+            }
+
+
+            Console.WriteLine($"{"ID",-5} {"Status",-10} {"Titel"}");
+            Console.WriteLine("-----------------------------------");
+
+            for (int i = 0; i < tasks.Count; i++)
+            {
+                int id = i + 1;
+
+                string statusSymbol = tasks[i].IsCompleted ? "[X] Done" : "[ ] Not done :";
+
+                if (tasks[i].IsCompleted) Console.ForegroundColor = ConsoleColor.Green;
+
+                Console.WriteLine($"{id,-5} {statusSymbol,-10} {tasks[i].Title}");
+
+                Console.ResetColor();
+            }
+        }
+
     }
+
+}
