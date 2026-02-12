@@ -1,65 +1,121 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MyApp
 {
-    public class TodoTask // Class to represent a task in the TODO app
+    internal class Program
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public bool IsCompleted { get; set; }
+       
+        static void Main(string[] args)
+        {
+            ToDoTask.DisplayMenu();
+        }
+   
     }
 
-    // DisplayMenu(); 
-    // Method to display the menu options to the user
-    public class TodoManager // Class to manage the methods related to the TODO app
+       
+
+    public class ToDoTask
     {
-        public List<TodoTask> tasks = new List<TodoTask>(); // List to store the tasks
+        public string Title { get; set; }
+        public bool IsCompleted { get; set; }
+        private static int _nextId = 1;
+        public int Id { get; private set; }
 
-        // DisplayAllTasks();
+        public List<ToDoTask> tasks = new();
 
-        // DisplayTasksByStatus();
+        public ToDoTask(string title)
+        {
+            Title = title;
+            IsCompleted = false;
+            Id = _nextId++;
+        }
 
-        // AddTask();
-        
-        // DeleteTask();
+        public ToDoTask()
+        {
+        }
 
-        // EditTask();
+        public void AddTask(string title)
+        {
+            tasks.Add(new ToDoTask(title));
+        }
+        public static void DisplayMenu()
+        {
+            bool isRunning = true;
+            while (isRunning)
+            {
+                Console.WriteLine("Välkommen till din To Do List!");
+                Console.WriteLine("[1] - Lägg till uppgift");
+                Console.WriteLine("[2] - Visa alla uppgifter");
+                Console.WriteLine("[3] - Markera som klar");
+                Console.WriteLine("[4] - Ta bort uppgift");
+                Console.WriteLine("[0] - Avsluta");
 
-        // CompleteTask();
+                string input = Console.ReadLine();
+                if (int.TryParse(input, out int choice))
+                {
+                    switch (choice)
+                    {
+                        case 1:
+                            var service = new ToDoTask();
+                            Console.WriteLine("Ange uppgiftens titel:");
+                            string title = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(title))
+                            {
+
+                            }
+                            service.AddTask(title);
+                            break;
+                        case 2:
+                            break;
+                        case 3:
+                        
+                            break;
+                        case 4:
+                            break;
+                        case 0:
+                            break;
+
+                        default:
+                            Console.WriteLine("Ogiltigt val, försök igen.");
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Ogiltigt val, försök igen.");
+                }
+            }
+        }
+         // CompleteTask();
         public void CompleteTask(int id) // Method to complete a task based on its id
         {
             // Assuming user chose to complete task from menu, do the below steps
-            TodoTask foundTask = tasks.FirstOrDefault(task => task.Id == id);      
+            ToDoTask task = tasks.FirstOrDefault(task => task.Id == id);      
             // if id match in list, show user message that task is completed
-            if (foundTask != null)
+            if (task != null)
             {
                 // if task already completed, show user message that task is already completed
-                if (foundTask.IsCompleted)
+                if (task.IsCompleted)
                 {
                     Console.WriteLine("Task is already completed.");
                     return;
                 }
-                else if (!foundTask.IsCompleted)
+                else if (!task.IsCompleted)
                 {
-                    foundTask.IsCompleted = true;
+                    task.IsCompleted = true;
                     Console.WriteLine("Task marked as completed.");
                     return;
                 }
             }         
             // else show error message
-            if (foundTask == null)
+            if (task == null)
             {
                 Console.WriteLine("Task not found.");
                 return;
             }            
         }
-    
     }
-    internal class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Hello World!");
-        }
-    }    
 }
