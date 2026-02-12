@@ -51,6 +51,7 @@ namespace MyApp
                 Console.WriteLine("[2] - Visa alla uppgifter");
                 Console.WriteLine("[3] - Markera som klar");
                 Console.WriteLine("[4] - Ta bort uppgift");
+                Console.WriteLine("[5] - Redigera uppgift");
                 Console.WriteLine("[0] - Avsluta");
 
                 string input = Console.ReadLine();
@@ -74,6 +75,33 @@ namespace MyApp
                         
                             break;
                         case 4:
+                            break;
+                        case 5:
+                            Console.WriteLine("Redigera uppgift");
+                            Console.WriteLine("================\n\n");
+
+                            // Show list of tasks so the user can see/choose ID
+                            service.DisplayAllTasks();
+
+                            Console.Write("\nAnge ID på uppgiften du vill ändra: ");
+                            if (int.TryParse(Console.ReadLine(), out int editId))
+                            {
+                                Console.Write("Ange ny titel: ");
+                                string newTitle = Console.ReadLine();
+
+                                if (!string.IsNullOrWhiteSpace(newTitle))
+                                {
+                                    service.EditTask(editId, newTitle);
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Titeln får inte vara tom.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Ogiltigt ID.");
+                            }
                             break;
                         case 0:
                             break;
@@ -146,10 +174,27 @@ namespace MyApp
             }
         }
 
-        public void AddTask(string desc)
+        //public void AddTask(string desc)
+        //{
+        //    tasks.Add(new TodoTask(desc));
+        //    Console.WriteLine("Uppgift tillagd!");
+        //}
+
+        // US7: As a user I want to be able to edit the title for a task to correct it or update it
+        public void EditTask(int id, string newTitle)
         {
-            tasks.Add(new TodoTask(desc));
-            Console.WriteLine("Uppgift tillagd!");
+            // Find task based on ID
+            ToDoTask taskToEdit = tasks.FirstOrDefault(t => t.Id == id);
+
+            if (taskToEdit != null)
+            {
+                taskToEdit.Title = newTitle;
+                Console.WriteLine($"Uppgift {id} har uppdaterats till: {newTitle}");
+            }
+            else
+            {
+                Console.WriteLine($"Kunde inte hitta någon uppgift med ID: {id}");
+            }
         }
     }
 
